@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PaintFlow
 
-## Getting Started
+PaintFlow is a modern paint retail and shop operations platform built for a real-world paint business use case. It combines a creative customer-facing storefront with an internal management dashboard for products, inventory, billing, customers, and reporting.
 
-First, run the development server:
+The goal of the project is to give paint shops a system that is both operationally useful and visually impressive:
+- a premium storefront for browsing products and categories
+- an admin panel for managing products, stock, invoices, and business data
+- a scalable foundation for future features like tint/shade handling, bill exports, and paint visualization integration
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+PaintFlow is being designed as two connected experiences:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Storefront
+The public-facing website where customers can:
+- explore paint products and categories
+- browse brands
+- request quotes
+- experience a premium, motion-rich paint-focused UI
 
-## Learn More
+### 2. Admin Dashboard
+The internal business system where the shop can:
+- add and edit products
+- manage stock and inventory
+- create and track invoices
+- manage customer data
+- review reports and operational metrics
 
-To learn more about Next.js, take a look at the following resources:
+This structure allows the business to manage content and inventory internally while automatically reflecting selected product data on the storefront.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Key Features
 
-## Deploy on Vercel
+### Storefront
+- premium landing page focused on color and material storytelling
+- category browsing
+- product listing and product detail pages
+- featured products and brand sections
+- quote request flow
+- responsive UI across desktop, tablet, and mobile
+- animation-first design direction using GSAP
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admin
+- product management
+- inventory overview
+- invoice management
+- customer records
+- reports dashboard
+- settings area
+- scalable structure for future auth and role-based access
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Planned / Future
+- tintable product handling
+- shade code and shade name support in billing
+- GST-aware invoice workflow
+- PDF/Excel exports
+- file and bill attachment handling
+- paint visualization software integration if supported
+- advanced analytics and low-stock automation
+
+---
+
+## Tech Stack
+
+### Frontend
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+### UI / DX
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Lucide Icons](https://lucide.dev/)
+- [GSAP](https://gsap.com/)
+
+### State / Forms / Validation
+- Zustand
+- React Hook Form
+- Zod
+
+### Data / Charts / Utilities
+- Recharts
+- date-fns
+- clsx
+- tailwind-merge
+
+---
+
+## Project Goals
+
+This project is being built to satisfy both business and portfolio goals:
+
+### Business goals
+- make product and stock handling easier for the shop
+- allow the owner/staff to manage products without developer involvement
+- provide a foundation for billing and invoice workflows
+- keep the storefront modern and customer-friendly
+
+### Portfolio goals
+- build a realistic business platform, not just a static website
+- showcase full-stack product thinking
+- combine strong UI design with business-system architecture
+- create a storefront with premium motion and performance-conscious frontend engineering
+
+---
