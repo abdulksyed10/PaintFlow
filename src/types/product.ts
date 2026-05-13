@@ -1,0 +1,20 @@
+export type Product = {
+  id: string;
+  name: string;
+  slug: string;
+  brand: string;
+  category: string;
+  finish?: string;
+  size: string;
+  unit: string;
+  price: number;
+  stock: number;
+  tintable: boolean;
+  status: "active" | "inactive";
+  isFeatured?: boolean;
+  isVisibleOnStorefront?: boolean;
+  image?: string;
+  shortDescription?: string;
+  description?: string;
+  lowStockThreshold?: number;
+};
