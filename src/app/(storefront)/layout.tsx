@@ -16,12 +16,12 @@ export default function StorefrontLayout({
             <p className="leading-6">
               Preview build — PaintFlow is currently being refined. Full launch
               with the custom domain on{" "}
-              <span className="font-semibold">June 1</span>.
+              <span className="font-semibold">July 20</span>.
             </p>
           </div>
 
           <span className="inline-flex w-fit items-center rounded-full border border-amber-300 bg-white/80 px-4 py-1.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
-            Launching June 1
+            Launching July 20
           </span>
         </div>
       </div>
