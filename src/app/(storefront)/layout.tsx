@@ -14,8 +14,7 @@ export default function StorefrontLayout({
           <div className="flex items-center gap-3">
             <Hammer className="h-5 w-5 shrink-0" />
             <p className="leading-6">
-              Preview build — PaintFlow is currently being refined. Full launch
-              with the custom domain on{" "}
+              Preview build — PaintFlow is currently being refined. Full launch on{" "}
               <span className="font-semibold">July 20</span>.
             </p>
           </div>
