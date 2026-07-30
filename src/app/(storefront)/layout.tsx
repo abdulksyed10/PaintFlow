@@ -17,7 +17,7 @@ export default function StorefrontLayout({
             </span>
             <p className="leading-6">
               Preview build — PaintFlow is currently being refined. Full launch on{" "}
-              <span className="font-semibold">August 10</span>.
+              <span className="font-semibold">August 20</span>.
             </p>
           </div>
 
