@@ -10,16 +10,16 @@ const featuredProducts = products.filter((product) => product.isFeatured);
 export default function StorefrontHomePage() {
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-black/5 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.16),_transparent_30%),linear-gradient(to_bottom,_#fafaf9,_#f5f5f4)]">
+      <section className="relative overflow-hidden border-b border-white/60 bg-[radial-gradient(circle_at_top,_rgba(251,146,60,0.18),_transparent_30%),radial-gradient(circle_at_80%_20%,_rgba(45,212,191,0.16),_transparent_24%),linear-gradient(to_bottom,_#fffaf5,_#fff4ea)]">
         <div className="mx-auto grid min-h-[70vh] max-w-7xl items-center gap-10 px-6 py-20 lg:grid-cols-2">
           <div className="max-w-2xl">
-            <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-amber-700">
+            <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-orange-700">
               Color changes everything
             </p>
-            <h1 className="text-5xl font-semibold tracking-tight text-neutral-950 sm:text-6xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
               Premium paints, practical operations, one modern platform.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-7 text-neutral-600 sm:text-lg">
+            <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
               Explore curated paint products, finishes, and brands through a storefront
               designed to feel refined, fast, and visually rich.
             </p>
@@ -39,10 +39,10 @@ export default function StorefrontHomePage() {
           </div>
 
           <div className="relative">
-            <div className="aspect-[4/3] rounded-[2rem] border border-black/5 bg-gradient-to-br from-stone-200 via-stone-100 to-amber-50 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.08)]">
-              <div className="flex h-full flex-col justify-between rounded-[1.5rem] border border-black/5 bg-white/60 p-6 backdrop-blur">
+            <div className="aspect-[4/3] rounded-[2rem] border border-white/70 bg-gradient-to-br from-orange-100 via-amber-50 to-teal-50 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)]">
+              <div className="flex h-full flex-col justify-between rounded-[1.5rem] border border-white/80 bg-white/70 p-6 backdrop-blur">
                 <div className="grid grid-cols-4 gap-3">
-                  {["#D6C6B8", "#B65E3C", "#8E9E82", "#F2C14E"].map((color) => (
+                  {["#F97316", "#FB7185", "#14B8A6", "#FBBF24"].map((color) => (
                     <div
                       key={color}
                       className="h-14 rounded-2xl shadow-sm"
@@ -52,18 +52,18 @@ export default function StorefrontHomePage() {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="h-5 w-40 rounded-full bg-neutral-300" />
-                  <div className="h-24 rounded-[1.5rem] bg-gradient-to-r from-stone-300 via-stone-100 to-amber-100" />
+                  <div className="h-5 w-40 rounded-full bg-slate-200" />
+                  <div className="h-24 rounded-[1.5rem] bg-gradient-to-r from-orange-200 via-amber-100 to-teal-100" />
                   <div className="flex gap-3">
-                    <div className="h-12 flex-1 rounded-2xl bg-neutral-200" />
-                    <div className="h-12 w-24 rounded-2xl bg-amber-200" />
+                    <div className="h-12 flex-1 rounded-2xl bg-slate-100" />
+                    <div className="h-12 w-24 rounded-2xl bg-orange-200" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-amber-300/40 blur-2xl" />
-            <div className="absolute -right-6 top-10 h-28 w-28 rounded-full bg-orange-300/30 blur-2xl" />
+            <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-orange-300/35 blur-2xl" />
+            <div className="absolute -right-6 top-10 h-28 w-28 rounded-full bg-teal-300/30 blur-2xl" />
           </div>
         </div>
       </section>
@@ -71,10 +71,10 @@ export default function StorefrontHomePage() {
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-500">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">
               Featured Selection
             </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
               Products built for finish, durability, and choice
             </h2>
           </div>
@@ -87,19 +87,19 @@ export default function StorefrontHomePage() {
           {featuredProducts.map((product) => (
             <Card
               key={product.id}
-              className="overflow-hidden rounded-[1.75rem] border-black/5 bg-white shadow-sm"
+              className="overflow-hidden rounded-[1.75rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
             >
-              <div className="h-40 bg-gradient-to-br from-stone-200 via-stone-100 to-amber-100" />
+              <div className="h-40 bg-gradient-to-br from-orange-100 via-amber-50 to-teal-50" />
               <CardContent className="space-y-4 p-6">
                 <div className="space-y-2">
-                  <p className="text-sm text-neutral-500">{product.brand}</p>
+                  <p className="text-sm text-slate-500">{product.brand}</p>
                   <h3 className="text-xl font-semibold tracking-tight">{product.name}</h3>
-                  <p className="text-sm leading-6 text-neutral-600">
+                  <p className="text-sm leading-6 text-slate-600">
                     {product.shortDescription}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-neutral-500">
+                <div className="flex items-center justify-between text-sm text-slate-500">
                   <span>
                     {product.size}
                     {product.unit}
@@ -108,7 +108,7 @@ export default function StorefrontHomePage() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-semibold text-neutral-950">
+                  <span className="text-lg font-semibold text-slate-950">
                     {formatCurrency(product.price)}
                   </span>
                   <Button asChild variant="outline" className="rounded-full">

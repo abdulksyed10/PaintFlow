@@ -7,13 +7,13 @@ export default function StorefrontProductsPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-14">
       <div className="max-w-2xl">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-500">
+        <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">
           Product Catalog
         </p>
-        <h1 className="mt-2 text-4xl font-semibold tracking-tight text-neutral-950">
+        <h1 className="mt-2 text-4xl font-semibold tracking-tight text-slate-950">
           Explore paints, primers, and surface essentials
         </h1>
-        <p className="mt-4 text-base leading-7 text-neutral-600">
+        <p className="mt-4 text-base leading-7 text-slate-600">
           A storefront-ready catalog experience for premium paint products across
           interior, exterior, primer, and preparation categories.
         </p>
@@ -21,12 +21,21 @@ export default function StorefrontProductsPage() {
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
-          <Card key={product.id} className="rounded-[1.5rem] border-black/5">
-            <div className="h-40 rounded-t-[1.5rem] bg-gradient-to-br from-stone-200 via-stone-100 to-neutral-50" />
+          <Card
+            key={product.id}
+            className="rounded-[1.5rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.05)]"
+          >
+            <div
+              className="h-40 rounded-t-[1.5rem]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to bottom right, rgb(255 237 213), rgb(254 243 199), rgb(204 251 241))",
+              }}
+            />
             <CardContent className="space-y-4 p-6">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-sm text-neutral-500">{product.brand}</p>
+                  <p className="text-sm text-slate-500">{product.brand}</p>
                   <h2 className="text-xl font-semibold tracking-tight">{product.name}</h2>
                 </div>
                 <Badge variant={product.tintable ? "default" : "secondary"}>
@@ -34,11 +43,11 @@ export default function StorefrontProductsPage() {
                 </Badge>
               </div>
 
-              <p className="text-sm leading-6 text-neutral-600">
+              <p className="text-sm leading-6 text-slate-600">
                 {product.shortDescription}
               </p>
 
-              <div className="flex flex-wrap gap-2 text-sm text-neutral-500">
+              <div className="flex flex-wrap gap-2 text-sm text-slate-500">
                 <span>{product.category}</span>
                 <span>•</span>
                 <span>
@@ -49,9 +58,9 @@ export default function StorefrontProductsPage() {
                 <span>{product.finish}</span>
               </div>
 
-              <div className="flex items-center justify-between border-t border-black/5 pt-4">
+              <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                 <span className="text-lg font-semibold">{formatCurrency(product.price)}</span>
-                <span className="text-sm text-neutral-500">Stock: {product.stock}</span>
+                <span className="text-sm text-slate-500">Stock: {product.stock}</span>
               </div>
             </CardContent>
           </Card>
