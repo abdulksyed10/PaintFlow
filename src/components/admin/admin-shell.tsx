@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, Paintbrush } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut, Menu, Paintbrush } from "lucide-react";
 
 import { adminNav } from "@/lib/nav";
+import type { AdminSession } from "@/lib/admin-session";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,9 +25,31 @@ function getSectionTitle(pathname: string) {
   return navItem?.title ?? "Dashboard";
 }
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: AdminSession;
+}) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const sectionTitle = getSectionTitle(pathname);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+
+    try {
+      await fetch("/api/auth/session", {
+        method: "DELETE",
+      });
+      router.replace("/admin-login");
+      router.refresh();
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-950">
@@ -117,6 +141,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   {sectionTitle}
                 </h1>
               </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-medium text-neutral-950">{session.displayName}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">{session.role}</p>
+              </div>
+
+              <Button variant="outline" size="sm" onClick={handleSignOut} disabled={isSigningOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign out
+              </Button>
             </div>
           </header>
 

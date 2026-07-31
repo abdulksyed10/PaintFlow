@@ -1,12 +1,27 @@
 import Link from "next/link";
-import { ArrowLeft, LockKeyhole, Paintbrush } from "lucide-react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { ArrowLeft, Paintbrush } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AdminLoginForm } from "@/components/admin/admin-login-form";
+import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin-session";
 
-export default function AdminLoginPage() {
+type AdminLoginPageProps = {
+  searchParams?: Promise<{ next?: string }>;
+};
+
+export default async function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+  const session = sessionToken ? await verifyAdminSessionToken(sessionToken) : null;
+
+  if (session) {
+    redirect("/admin");
+  }
+
+  const resolvedSearchParams = await searchParams;
+  const nextPath = resolvedSearchParams?.next || "/admin";
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_28%),linear-gradient(to_bottom,#fafaf9,#f5f5f4)] px-6 py-10 text-neutral-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 lg:grid lg:min-h-[80vh] lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
@@ -52,79 +67,7 @@ export default function AdminLoginPage() {
         </div>
 
         <div className="lg:justify-self-end">
-          <Card className="w-full max-w-md rounded-[2rem] border-black/5 bg-white/90 shadow-[0_30px_80px_rgba(0,0,0,0.08)] backdrop-blur">
-            <CardHeader className="space-y-4 pb-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
-                <LockKeyhole className="h-5 w-5" />
-              </div>
-
-              <div>
-                <p className="text-sm font-medium uppercase tracking-[0.18em] text-neutral-500">
-                  Secure Admin Entry
-                </p>
-                <CardTitle className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">
-                  Sign in to dashboard
-                </CardTitle>
-              </div>
-            </CardHeader>
-
-            <CardContent className="space-y-6 pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="admin@paintflow.com"
-                  className="h-12 rounded-xl border-black/10 bg-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between gap-3">
-                  <Label htmlFor="password">Password</Label>
-                  <button
-                    type="button"
-                    className="text-sm font-medium text-amber-700 transition-colors hover:text-amber-800"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  className="h-12 rounded-xl border-black/10 bg-white"
-                />
-              </div>
-
-              <div className="flex items-center justify-between gap-3 text-sm text-neutral-600">
-                <label className="inline-flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-neutral-300 accent-amber-700"
-                  />
-                  Remember me
-                </label>
-
-                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
-                  UI Preview
-                </span>
-              </div>
-
-              <Button
-                asChild
-                size="lg"
-                className="h-12 w-full rounded-xl bg-neutral-950 text-white hover:bg-neutral-800"
-              >
-                <Link href="/admin">Sign In</Link>
-              </Button>
-
-              <p className="text-sm leading-6 text-neutral-500">
-                This is currently a frontend login preview. Secure authentication
-                and role-based access will be connected in a later phase.
-              </p>
-            </CardContent>
-          </Card>
+          <AdminLoginForm nextPath={nextPath} />
         </div>
       </div>
     </div>
