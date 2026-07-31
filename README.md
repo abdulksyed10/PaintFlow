@@ -30,6 +30,18 @@ The internal business system where the shop can:
 
 This structure allows the business to manage content and inventory internally while automatically reflecting selected product data on the storefront.
 
+## Current Status
+
+The repository now includes a local-first foundation for demo development:
+
+- Dexie-backed IndexedDB storage scaffolding
+- shared seed data for categories, brands, products, customers, suppliers, invoices, users, and settings
+- repository abstractions to keep the UI detached from storage
+- local backup/bootstrap utilities
+- a small client-side bootstrap provider that seeds demo data on first launch
+
+The current UI still uses the existing storefront and admin demo pages, but they now source their data from the shared seed layer instead of isolated one-off arrays.
+
 ---
 
 ## Key Features
@@ -60,6 +72,11 @@ This structure allows the business to manage content and inventory internally wh
 - file and bill attachment handling
 - paint visualization software integration if supported
 - advanced analytics and low-stock automation
+
+### Development-only access
+- Demo admin account seeded for the local auth phase: `demo.owner`
+- Development password: `PaintFlow@123`
+- This is for local development only and is not production-grade security
 
 ---
 

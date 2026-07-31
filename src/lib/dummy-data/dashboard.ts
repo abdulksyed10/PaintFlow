@@ -1,54 +1,43 @@
-import { products } from "@/lib/dummy-data/products";
+import { demoProducts, demoSalesInvoices } from "@/data/seed/demo-data";
+import { formatCurrency } from "@/lib/format";
 
 export const dashboardStats = [
   {
     title: "Total Products",
-    value: products.length.toString(),
+    value: demoProducts.length.toString(),
     change: "+12 this month",
   },
   {
     title: "Low Stock Items",
-    value: products.filter(
-      (product) => product.stock <= (product.lowStockThreshold ?? 0)
-    ).length.toString(),
+    value: demoProducts
+      .filter((product) => product.stock <= (product.lowStockThreshold ?? 0))
+      .length.toString(),
     change: "Needs attention",
   },
   {
     title: "Today's Sales",
-    value: "₹12,480",
+    value: formatCurrency(
+      demoSalesInvoices
+        .filter((invoice) => invoice.status === "paid")
+        .reduce((total, invoice) => total + invoice.grandTotal, 0)
+    ),
     change: "+8.2% vs yesterday",
   },
   {
     title: "Invoices This Week",
-    value: "34",
+    value: demoSalesInvoices.length.toString(),
     change: "+5 new",
   },
 ];
 
-export const recentInvoices = [
-  {
-    id: "INV-1001",
-    customer: "Rahul Constructions",
-    amount: 8240,
-    status: "Paid",
-    date: "Today",
-  },
-  {
-    id: "INV-1002",
-    customer: "Sri Lakshmi Interiors",
-    amount: 5120,
-    status: "Pending",
-    date: "Today",
-  },
-  {
-    id: "INV-0998",
-    customer: "Mahesh Kumar",
-    amount: 2380,
-    status: "Paid",
-    date: "Yesterday",
-  },
-];
+export const recentInvoices = demoSalesInvoices.map((invoice) => ({
+  id: invoice.invoiceNumber,
+  customer: invoice.customerName,
+  amount: invoice.grandTotal,
+  status: invoice.status === "draft" ? "Pending" : invoice.status === "paid" ? "Paid" : "Open",
+  date: invoice.invoiceDate === demoSalesInvoices[0]?.invoiceDate ? "Today" : "Yesterday",
+}));
 
-export const lowStockProducts = products.filter(
+export const lowStockProducts = demoProducts.filter(
   (product) => product.stock <= (product.lowStockThreshold ?? 0)
 );
