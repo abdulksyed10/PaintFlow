@@ -1,9 +1,16 @@
 import { products } from "@/lib/dummy-data/products";
-import { formatCurrency } from "@/lib/format";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { ProductCatalog } from "@/features/storefront/product-catalog";
 
-export default function StorefrontProductsPage() {
+export default function StorefrontProductsPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
+  const getParam = (key: string) => {
+    const value = searchParams?.[key];
+    return Array.isArray(value) ? value[0] : value;
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-14">
       <div className="max-w-2xl">
@@ -14,57 +21,25 @@ export default function StorefrontProductsPage() {
           Explore paints, primers, and surface essentials
         </h1>
         <p className="mt-4 text-base leading-7 text-slate-600">
-          A storefront-ready catalog experience for premium paint products across
-          interior, exterior, primer, and preparation categories.
+          A richer catalog with live search, brand and category filters, tintable and stock filters,
+          and product-level sorting to make browsing faster.
         </p>
       </div>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {products.map((product) => (
-          <Card
-            key={product.id}
-            className="rounded-[1.5rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.05)]"
-          >
-            <div
-              className="h-40 rounded-t-[1.5rem]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to bottom right, rgb(255 237 213), rgb(254 243 199), rgb(204 251 241))",
-              }}
-            />
-            <CardContent className="space-y-4 p-6">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm text-slate-500">{product.brand}</p>
-                  <h2 className="text-xl font-semibold tracking-tight">{product.name}</h2>
-                </div>
-                <Badge variant={product.tintable ? "default" : "secondary"}>
-                  {product.tintable ? "Tintable" : "Standard"}
-                </Badge>
-              </div>
-
-              <p className="text-sm leading-6 text-slate-600">
-                {product.shortDescription}
-              </p>
-
-              <div className="flex flex-wrap gap-2 text-sm text-slate-500">
-                <span>{product.category}</span>
-                <span>•</span>
-                <span>
-                  {product.size}
-                  {product.unit}
-                </span>
-                <span>•</span>
-                <span>{product.finish}</span>
-              </div>
-
-              <div className="flex items-center justify-between border-t border-slate-100 pt-4">
-                <span className="text-lg font-semibold">{formatCurrency(product.price)}</span>
-                <span className="text-sm text-slate-500">Stock: {product.stock}</span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="mt-10">
+        <ProductCatalog
+          products={products}
+          initialState={{
+            query: getParam("q") ?? undefined,
+            category: getParam("category") ?? undefined,
+            brand: getParam("brand") ?? undefined,
+            classification: getParam("classification") ?? undefined,
+            finish: getParam("finish") ?? undefined,
+            tintableOnly: getParam("tintable") === "1",
+            stockView: getParam("stock") ?? undefined,
+            sort: (getParam("sort") as never) ?? undefined,
+          }}
+        />
       </div>
     </div>
   );

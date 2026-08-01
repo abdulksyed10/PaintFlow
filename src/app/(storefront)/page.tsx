@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BadgeCheck, Palette, Search, Sparkles } from "lucide-react";
 import { products } from "@/lib/dummy-data/products";
 import { formatCurrency } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { storefrontNav } from "@/lib/nav";
 
 const featuredProducts = products.filter((product) => product.isFeatured);
+const categoryNames = Array.from(new Set(products.map((product) => product.category)));
 
 export default function StorefrontHomePage() {
   return (
@@ -20,8 +22,8 @@ export default function StorefrontHomePage() {
               Premium paints, practical operations, one modern platform.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-              Explore curated paint products, finishes, and brands through a storefront
-              designed to feel refined, fast, and visually rich.
+              Explore curated paint products, finishes, brands, and shade-ready systems through a storefront
+              designed for quick discovery and quote-first browsing.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -35,6 +37,19 @@ export default function StorefrontHomePage() {
               <Button asChild variant="outline" size="lg" className="rounded-full px-6">
                 <Link href="/quote-request">Request a Quote</Link>
               </Button>
+            </div>
+
+            <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {[
+                { label: "Categories", value: `${categoryNames.length}+` },
+                { label: "Featured Products", value: `${featuredProducts.length}` },
+                { label: "Quote Ready", value: "Yes" },
+              ].map((item) => (
+                <div key={item.label} className="rounded-2xl border border-white/80 bg-white/70 p-4 backdrop-blur">
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{item.label}</p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">{item.value}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -65,6 +80,59 @@ export default function StorefrontHomePage() {
             <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-orange-300/35 blur-2xl" />
             <div className="absolute -right-6 top-10 h-28 w-28 rounded-full bg-teal-300/30 blur-2xl" />
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-6">
+        <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+          <Card className="rounded-[1.75rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
+            <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Browse Faster</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                  Search by brand, category, tintability, finish, or stock range.
+                </h2>
+              </div>
+              <Button asChild className="rounded-full">
+                <Link href="/products">
+                  <Search className="mr-2 h-4 w-4" />
+                  Open Catalog
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[1.75rem] border-white/70 bg-gradient-to-br from-orange-50 via-amber-50 to-teal-50 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
+            <CardContent className="flex h-full items-center gap-4 p-6">
+              <div className="rounded-2xl bg-white p-3 text-orange-600 shadow-sm">
+                <Palette className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Quote Support</p>
+                <p className="mt-2 text-base leading-6 text-slate-700">
+                  Need shades, primers, or a mixed basket? Send the team a quote request with product selections.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-4">
+        <div className="flex flex-wrap items-center gap-3">
+          {storefrontNav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full border border-white/80 bg-white/75 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-colors hover:border-orange-200 hover:text-orange-600"
+            >
+              {item.title}
+            </Link>
+          ))}
+          <span className="rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700">
+            <BadgeCheck className="mr-1 inline h-4 w-4 align-[-2px]" />
+            Trusted product discovery
+          </span>
         </div>
       </section>
 
