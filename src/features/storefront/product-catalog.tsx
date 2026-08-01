@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ProductSelectionActions } from "@/features/products/product-selection-actions";
 
 type SortOption = "featured" | "recommended" | "price-asc" | "price-desc" | "stock-desc" | "name-asc";
 
@@ -52,6 +54,164 @@ function categoryTone(category: string) {
   if (value.includes("primer") || value.includes("base")) return "from-lime-100 via-emerald-50 to-white";
   if (value.includes("putty") || value.includes("prep")) return "from-slate-100 via-zinc-50 to-white";
   return "from-rose-100 via-orange-50 to-white";
+}
+
+type FilterControlsProps = {
+  query: string;
+  setQuery: (value: string) => void;
+  category: string;
+  setCategory: (value: string) => void;
+  brand: string;
+  setBrand: (value: string) => void;
+  classification: string;
+  setClassification: (value: string) => void;
+  finish: string;
+  setFinish: (value: string) => void;
+  tintableOnly: boolean;
+  setTintableOnly: (value: boolean | ((current: boolean) => boolean)) => void;
+  stockView: string;
+  setStockView: (value: string) => void;
+  sort: SortOption;
+  setSort: (value: SortOption) => void;
+  categoryOptions: FilterOption[];
+  brandOptions: FilterOption[];
+  classificationOptions: FilterOption[];
+  finishOptions: FilterOption[];
+  onReset: () => void;
+};
+
+function FilterControls({
+  query,
+  setQuery,
+  category,
+  setCategory,
+  brand,
+  setBrand,
+  classification,
+  setClassification,
+  finish,
+  setFinish,
+  tintableOnly,
+  setTintableOnly,
+  stockView,
+  setStockView,
+  sort,
+  setSort,
+  categoryOptions,
+  brandOptions,
+  classificationOptions,
+  finishOptions,
+  onReset,
+}: FilterControlsProps) {
+  return (
+    <>
+      <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
+        <div className="space-y-2 xl:col-span-2">
+          <label className="text-sm font-medium text-slate-700">Search</label>
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search products, brands, finishes, use cases, or surfaces"
+              className="h-11 rounded-2xl pl-10"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">Brand</label>
+          <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={brand} onChange={(event) => setBrand(event.target.value)}>
+            <option value="all">All brands</option>
+            {brandOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">Classification</label>
+          <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={classification} onChange={(event) => setClassification(event.target.value)}>
+            <option value="all">All types</option>
+            {classificationOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">Finish</label>
+          <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={finish} onChange={(event) => setFinish(event.target.value)}>
+            <option value="all">All finishes</option>
+            {finishOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">Stock</label>
+          <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={stockView} onChange={(event) => setStockView(event.target.value)}>
+            <option value="all">All stock</option>
+            <option value="in">In stock</option>
+            <option value="low">Low stock</option>
+            <option value="out">Out of stock</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">Sort</label>
+          <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={sort} onChange={(event) => setSort(event.target.value as SortOption)}>
+            <option value="featured">Featured first</option>
+            <option value="recommended">Recommended</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="stock-desc">Stock: high to low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          type="button"
+          variant={tintableOnly ? "default" : "outline"}
+          className="rounded-full"
+          onClick={() => setTintableOnly((current) => !current)}
+        >
+          Tintable only
+        </Button>
+        <Button
+          type="button"
+          variant={category === "all" ? "default" : "outline"}
+          className="rounded-full"
+          onClick={onReset}
+        >
+          Reset filters
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        {categoryOptions.map((item) => (
+          <Button
+            key={item.value}
+            type="button"
+            variant={category === item.value ? "default" : "outline"}
+            className="rounded-full"
+            onClick={() => setCategory(item.value)}
+          >
+            {item.label}
+          </Button>
+        ))}
+      </div>
+    </>
+  );
 }
 
 export function ProductCatalog({ products, initialState }: { products: Product[]; initialState?: ProductCatalogState }) {
@@ -206,93 +366,29 @@ export function ProductCatalog({ products, initialState }: { products: Product[]
             </div>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
-            <div className="space-y-2 xl:col-span-2">
-              <label className="text-sm font-medium text-slate-700">Search</label>
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search products, brands, finishes, use cases, or surfaces"
-                  className="h-11 rounded-2xl pl-10"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Brand</label>
-              <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={brand} onChange={(event) => setBrand(event.target.value)}>
-                <option value="all">All brands</option>
-                {brandOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Classification</label>
-              <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={classification} onChange={(event) => setClassification(event.target.value)}>
-                <option value="all">All types</option>
-                {classificationOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Finish</label>
-              <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={finish} onChange={(event) => setFinish(event.target.value)}>
-                <option value="all">All finishes</option>
-                {finishOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Stock</label>
-              <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={stockView} onChange={(event) => setStockView(event.target.value)}>
-                <option value="all">All stock</option>
-                <option value="in">In stock</option>
-                <option value="low">Low stock</option>
-                <option value="out">Out of stock</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Sort</label>
-              <select className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm" value={sort} onChange={(event) => setSort(event.target.value as SortOption)}>
-                <option value="featured">Featured first</option>
-                <option value="recommended">Recommended</option>
-                <option value="price-asc">Price: low to high</option>
-                <option value="price-desc">Price: high to low</option>
-                <option value="stock-desc">Stock: high to low</option>
-                <option value="name-asc">Name: A to Z</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              variant={tintableOnly ? "default" : "outline"}
-              className="rounded-full"
-              onClick={() => setTintableOnly((current) => !current)}
-            >
-              Tintable only
-            </Button>
-            <Button
-              type="button"
-              variant={category === "all" ? "default" : "outline"}
-              className="rounded-full"
-              onClick={() => {
+          <div className="hidden lg:block">
+            <FilterControls
+              query={query}
+              setQuery={setQuery}
+              category={category}
+              setCategory={setCategory}
+              brand={brand}
+              setBrand={setBrand}
+              classification={classification}
+              setClassification={setClassification}
+              finish={finish}
+              setFinish={setFinish}
+              tintableOnly={tintableOnly}
+              setTintableOnly={setTintableOnly}
+              stockView={stockView}
+              setStockView={setStockView}
+              sort={sort}
+              setSort={setSort}
+              categoryOptions={categoryChips}
+              brandOptions={brandOptions}
+              classificationOptions={classificationOptions}
+              finishOptions={finishOptions}
+              onReset={() => {
                 setCategory("all");
                 setQuery("");
                 setBrand("all");
@@ -302,32 +398,84 @@ export function ProductCatalog({ products, initialState }: { products: Product[]
                 setStockView("all");
                 setSort("featured");
               }}
-            >
-              Reset filters
-            </Button>
+            />
           </div>
-        </CardHeader>
-      </Card>
 
-      <div className="flex flex-wrap items-center gap-2">
-        {categoryChips.map((item) => (
-          <Button
-            key={item.value}
-            type="button"
-            variant={category === item.value ? "default" : "outline"}
-            className="rounded-full"
-            onClick={() => setCategory(item.value)}
-          >
-            {item.label}
-          </Button>
-        ))}
-      </div>
+          <div className="flex items-center gap-3 lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="rounded-full">
+                  <SlidersHorizontal className="mr-2 h-4 w-4" />
+                  Open filters
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[90vh] overflow-y-auto rounded-t-[2rem] p-0 sm:max-w-none">
+                <SheetHeader className="border-b border-slate-100 px-6 py-5 text-left">
+                  <SheetTitle className="text-2xl font-semibold tracking-tight">Filter catalog</SheetTitle>
+                  <SheetDescription>
+                    Search, sort, and narrow products without leaving the page.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="space-y-5 px-6 py-6">
+                  <FilterControls
+                    query={query}
+                    setQuery={setQuery}
+                    category={category}
+                    setCategory={setCategory}
+                    brand={brand}
+                    setBrand={setBrand}
+                    classification={classification}
+                    setClassification={setClassification}
+                    finish={finish}
+                    setFinish={setFinish}
+                    tintableOnly={tintableOnly}
+                    setTintableOnly={setTintableOnly}
+                    stockView={stockView}
+                    setStockView={setStockView}
+                    sort={sort}
+                    setSort={setSort}
+                    categoryOptions={categoryChips}
+                    brandOptions={brandOptions}
+                    classificationOptions={classificationOptions}
+                    finishOptions={finishOptions}
+                    onReset={() => {
+                      setCategory("all");
+                      setQuery("");
+                      setBrand("all");
+                      setClassification("all");
+                      setFinish("all");
+                      setTintableOnly(false);
+                      setStockView("all");
+                      setSort("featured");
+                    }}
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <div className="flex flex-wrap gap-2 text-sm text-slate-500">
+              <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">{summary.activeCount} results</span>
+              <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">{productCounts.lowStock} low stock</span>
+            </div>
+          </div>
+      </CardHeader>
+      </Card>
 
       <div className="flex flex-wrap gap-2 text-sm text-slate-500">
         <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">All products: {productCounts.all}</span>
         <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">Featured: {productCounts.featured}</span>
         <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">Tintable: {productCounts.tintable}</span>
         <span className="rounded-full border border-white/70 bg-white/75 px-3 py-1.5 shadow-sm">Low stock: {productCounts.lowStock}</span>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-white/70 bg-white/80 px-5 py-4 shadow-[0_12px_40px_rgba(15,23,42,0.05)] backdrop-blur">
+        <div>
+          <p className="text-sm font-medium text-slate-900">Compare or shortlist products as you browse.</p>
+          <p className="text-sm text-slate-600">Save items from the cards below, then open the compare board when you want side-by-side review.</p>
+        </div>
+        <Button asChild variant="outline" className="rounded-full">
+          <Link href="/products/compare">Open compare board</Link>
+        </Button>
       </div>
 
       <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -389,10 +537,13 @@ export function ProductCatalog({ products, initialState }: { products: Product[]
                     <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Price</p>
                     <p className="text-lg font-semibold text-slate-950">{formatCurrency(product.price)}</p>
                   </div>
-                  <Button asChild className="rounded-full">
-                    <Link href={`/products/${product.slug}`}>View details</Link>
-                  </Button>
                 </div>
+
+                <ProductSelectionActions productId={product.id} compact />
+
+                <Button asChild variant="outline" className="w-full rounded-full">
+                  <Link href={`/products/${product.slug}`}>View details</Link>
+                </Button>
               </CardContent>
             </Card>
           );

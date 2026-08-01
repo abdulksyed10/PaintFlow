@@ -7,6 +7,7 @@ import { products } from "@/lib/dummy-data/products";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ShadeSelectionActions } from "@/features/shades/shade-selection-actions";
 
 function shadeCardStyle(imageUrl: string | null | undefined, hex: string) {
   if (imageUrl) {
@@ -110,6 +111,8 @@ export default async function ShadeDetailPage({ params }: { params: { id: string
                 </Link>
               </Button>
             </div>
+
+              <ShadeSelectionActions shadeId={shade.id} />
           </CardContent>
         </Card>
       </section>

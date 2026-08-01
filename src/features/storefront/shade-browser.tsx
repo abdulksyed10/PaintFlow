@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ShadeSelectionActions } from "@/features/shades/shade-selection-actions";
 
 function shadeCardStyle(imageUrl: string | null | undefined, hex: string) {
   if (imageUrl) {
@@ -101,6 +102,13 @@ export function ShadeBrowser({
               Custom shades only
             </Button>
           </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
+            <p>Save shade cards you want to revisit or compare side by side.</p>
+            <Button asChild variant="outline" className="rounded-full">
+              <Link href="/shades/compare">Open compare board</Link>
+            </Button>
+          </div>
         </CardHeader>
       </Card>
 
@@ -139,6 +147,8 @@ export function ShadeBrowser({
                   <Badge variant="secondary">{shade.imageUrl ? "Image card" : "Generated preview"}</Badge>
                   <Badge variant="outline">{shade.productId ? "Linked product" : "Standalone"}</Badge>
                 </div>
+
+                <ShadeSelectionActions shadeId={shade.id} />
 
                 <Button asChild className="w-full rounded-full">
                   <Link href={`/shades/${shade.id}`}>Open shade</Link>

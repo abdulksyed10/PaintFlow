@@ -1,13 +1,20 @@
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Palette, Search, Sparkles } from "lucide-react";
 import { products } from "@/lib/dummy-data/products";
-import { demoCategories } from "@/data/seed/demo-data";
+import { demoBrands, demoCategories } from "@/data/seed/demo-data";
 import { formatCurrency } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { storefrontNav } from "@/lib/nav";
 
 const featuredProducts = products.filter((product) => product.isFeatured);
+const featuredBrands = demoBrands
+  .filter((brand) => brand.storefrontVisible && brand.featured)
+  .map((brand) => ({
+    ...brand,
+    productCount: products.filter((product) => product.brand === brand.name).length,
+  }))
+  .sort((left, right) => left.displayOrder - right.displayOrder);
 const categoryCards = demoCategories
   .filter((category) => category.storefrontVisible)
   .map((category) => ({
@@ -181,6 +188,47 @@ export default function StorefrontHomePage() {
             <BadgeCheck className="mr-1 inline h-4 w-4 align-[-2px]" />
             Trusted product discovery
           </span>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-8">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Featured brands</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Brands customers ask for most</h2>
+          </div>
+          <Button asChild variant="ghost" className="rounded-full">
+            <Link href="/products">See catalog</Link>
+          </Button>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {featuredBrands.map((brand) => (
+            <Card key={brand.id} className="rounded-[1.75rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
+              <CardContent className="space-y-4 p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-100 via-amber-50 to-teal-50 text-lg font-semibold text-slate-700 shadow-sm">
+                      {brand.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-500">Brand</p>
+                      <h3 className="text-xl font-semibold tracking-tight text-slate-950">{brand.name}</h3>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-700">
+                    {brand.productCount} items
+                  </span>
+                </div>
+
+                <p className="text-sm leading-6 text-slate-600">{brand.description}</p>
+
+                <Button asChild variant="outline" className="w-full rounded-full">
+                  <Link href={`/products?brand=${encodeURIComponent(brand.name)}`}>Browse {brand.name}</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 

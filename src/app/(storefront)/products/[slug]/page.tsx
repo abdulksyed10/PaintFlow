@@ -7,6 +7,7 @@ import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProductSelectionActions } from "@/features/products/product-selection-actions";
 
 function categoryTone(category: string) {
   const value = category.toLowerCase();
@@ -152,6 +153,8 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
                   </Link>
                 </Button>
               </div>
+
+              <ProductSelectionActions productId={product.id} />
             </CardContent>
           </Card>
 
