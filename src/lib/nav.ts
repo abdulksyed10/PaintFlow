@@ -1,9 +1,11 @@
 import {
   Boxes,
-  Landmark,
   LayoutDashboard,
   Layers3,
   Package,
+  Settings2,
+  BarChart3,
+  Landmark,
   Users,
   Truck,
   ReceiptText,
@@ -18,6 +20,8 @@ export const adminNav = [
   { title: "Suppliers", href: "/admin/suppliers", icon: Truck },
   { title: "Inventory", href: "/admin/inventory", icon: Boxes },
   { title: "Invoices", href: "/admin/invoices", icon: ReceiptText },
+  { title: "Reports", href: "/admin/reports", icon: BarChart3 },
+  { title: "Settings", href: "/admin/settings", icon: Settings2 },
 ];
 
 export const storefrontNav = [
