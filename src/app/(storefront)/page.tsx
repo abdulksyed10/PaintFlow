@@ -33,7 +33,7 @@ export default function StorefrontHomePage() {
               </Button>
 
               <Button asChild variant="outline" size="lg" className="rounded-full px-6">
-                <Link href="/admin">View Admin Demo</Link>
+                <Link href="/quote-request">Request a Quote</Link>
               </Button>
             </div>
           </div>

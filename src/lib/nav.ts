@@ -6,6 +6,7 @@ import {
   Settings2,
   BarChart3,
   Landmark,
+  MessageSquareQuote,
   Users,
   Truck,
   ReceiptText,
@@ -20,6 +21,7 @@ export const adminNav = [
   { title: "Suppliers", href: "/admin/suppliers", icon: Truck },
   { title: "Inventory", href: "/admin/inventory", icon: Boxes },
   { title: "Invoices", href: "/admin/invoices", icon: ReceiptText },
+  { title: "Quotes", href: "/admin/quotes", icon: MessageSquareQuote },
   { title: "Reports", href: "/admin/reports", icon: BarChart3 },
   { title: "Settings", href: "/admin/settings", icon: Settings2 },
 ];
@@ -27,4 +29,5 @@ export const adminNav = [
 export const storefrontNav = [
   { title: "Home", href: "/" },
   { title: "Products", href: "/products" },
+  { title: "Request a Quote", href: "/quote-request" },
 ];
