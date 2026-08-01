@@ -1,5 +1,5 @@
-import { SalesInvoiceHistory } from "@/features/invoices/sales-invoice-history";
+import { InvoiceWorkbench } from "@/features/invoices/invoice-workbench";
 
 export default function AdminInvoicesPage() {
-  return <SalesInvoiceHistory />;
+  return <InvoiceWorkbench />;
 }
