@@ -173,6 +173,7 @@ export interface Shade extends EntityMetadata {
   code: string;
   name: string;
   hex: string;
+  imageUrl?: string | null;
   red?: number;
   green?: number;
   blue?: number;

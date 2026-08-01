@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Palette, Search, Sparkles } from "lucide-react";
 import { products } from "@/lib/dummy-data/products";
+import { demoCategories } from "@/data/seed/demo-data";
 import { formatCurrency } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { storefrontNav } from "@/lib/nav";
 
 const featuredProducts = products.filter((product) => product.isFeatured);
-const categoryNames = Array.from(new Set(products.map((product) => product.category)));
+const categoryCards = demoCategories
+  .filter((category) => category.storefrontVisible)
+  .map((category) => ({
+    ...category,
+    productCount: products.filter((product) => product.categoryId === category.id).length,
+    featuredCount: products.filter((product) => product.categoryId === category.id && product.isFeatured).length,
+  }))
+  .sort((left, right) => left.displayOrder - right.displayOrder);
 
 export default function StorefrontHomePage() {
   return (
@@ -41,7 +49,7 @@ export default function StorefrontHomePage() {
 
             <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
               {[
-                { label: "Categories", value: `${categoryNames.length}+` },
+                { label: "Categories", value: `${categoryCards.length}` },
                 { label: "Featured Products", value: `${featuredProducts.length}` },
                 { label: "Quote Ready", value: "Yes" },
               ].map((item) => (
@@ -80,6 +88,46 @@ export default function StorefrontHomePage() {
             <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-orange-300/35 blur-2xl" />
             <div className="absolute -right-6 top-10 h-28 w-28 rounded-full bg-teal-300/30 blur-2xl" />
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-8">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Browse by category</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Start from the product family that fits the job</h2>
+          </div>
+          <Button asChild variant="ghost" className="rounded-full">
+            <Link href="/categories">View all categories</Link>
+          </Button>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {categoryCards.slice(0, 4).map((category) => (
+            <Card key={category.id} className="rounded-[1.75rem] border-white/70 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
+              <CardContent className="space-y-4 p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-slate-500">Category</p>
+                    <h3 className="text-xl font-semibold tracking-tight text-slate-950">{category.name}</h3>
+                  </div>
+                  <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-700">
+                    {category.productCount} items
+                  </span>
+                </div>
+
+                <p className="text-sm leading-6 text-slate-600">{category.description}</p>
+
+                <div className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+                  Featured products: <span className="font-semibold text-slate-950">{category.featuredCount}</span>
+                </div>
+
+                <Button asChild variant="outline" className="w-full rounded-full">
+                  <Link href={`/categories/${category.slug}`}>Explore category</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
